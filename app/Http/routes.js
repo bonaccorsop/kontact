@@ -48,8 +48,12 @@ app.use('/signin', (new LoginController()).getRouter());
 const UserController = require('./Controllers/UserController');
 app.use('/users', (new UserController(services.user)).getRouter());
 
+// Template Controller
+const TemplateController = require('./Controllers/TemplateController');
+app.use('/templates', (new TemplateController(services.template)).getRouter());
+
 const ContactController = require('./Controllers/ContactController');
-app.use('/contacts', (new ContactController(services.message)).getRouter());
+app.use('/contacts', (new ContactController(services.contact)).getRouter());
 
 const MessageController = require('./Controllers/MessageController');
 app.use('/messages', (new MessageController(services.message)).getRouter());

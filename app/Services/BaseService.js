@@ -9,6 +9,7 @@ module.exports = class BaseService
   constructor(options) {
     this.options = options;
     this.logger = options.logger || console;
+    this.scheduler = options.scheduler;
   }
 
   checkIfEntityExistsOrFail$(entity, message = 'Entity not found') {
@@ -52,6 +53,19 @@ module.exports = class BaseService
       this.options.eventEmitter.emit(eventName, data);
     }
     return true;
+  }
+
+  emitEvent$(eventName, data) {
+
+    this.logger.debug(eventName);
+
+    return Observable.of(this.emitEvent(eventName, data))
+      .map(status => data)
+  }
+
+  schedule$(when, jobName, data) {
+    return this.scheduler.schedule$(when, jobName, data)
+      .map(status => data)
   }
 
 

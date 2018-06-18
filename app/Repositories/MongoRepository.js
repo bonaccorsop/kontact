@@ -112,6 +112,7 @@ module.exports = class MongoRepository {
    * @return Observable
    */
   find$(id) {
+    id = id instanceof Types.ObjectId ? id : Types.ObjectId(id);
     return this.findById$(this.modelName, id);
   }
 

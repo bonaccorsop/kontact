@@ -8,36 +8,27 @@ const { logger, clients } = require('./dependencies');
 const { capitalizeWords } = require('./Utils/String');
 
 
-appEvents.listen(['menu.created', 'menu.updated'], menuDoc => {
-  return agenda.schedule$('in 2 seconds', 'menu.publish', menuDoc);
+appEvents.listen(['contact.created'], contactDoc => {
+  return Observable.of(1)
+    .do(na => logger.debug('contact created', contactDoc))
 });
 
-appEvents.listen(['menu.created'], menuDoc => {
-  return agenda.schedule$(menuDoc.times.send, 'menu.sendRecap', menuDoc.code);
+appEvents.listen(['contact.updated'], contactDoc => {
+  return Observable.of(1)
+    .do(na => logger.debug('contact updated', contactDoc))
 });
 
-appEvents.listen(['order.created', 'order.updated'], orderDoc => {
-  return Observable.of(1);
-    //.flatMap(orderDoc => clients.telegram.sendMessage('Ordine Creato'))
+appEvents.listen(['template.created'], templateDoc => {
+  return Observable.of(1)
+    .do(na => logger.debug('template created', templateDoc))
 });
 
-appEvents.listen(['order.deleted'], orderDoc => {
-  return Observable.of(1);
+appEvents.listen(['template.updated'], templateDoc => {
+  return Observable.of(1)
+    .do(na => logger.debug('template updated', templateDoc))
 });
 
-appEvents.listen(['orderProduct.done'], ({ order, changedProduct }) => {
 
-  const labelPayload = {
-    user: changedProduct.label,
-    product: changedProduct.name,
-    agency: capitalizeWords(order.toObject().user.agency),
-  }
-
-  return Observable.range(0, changedProduct.qta)
-    .do(na => logger.info('Printing Label', labelPayload))
-    .flatMap(na => faith.send$(['printer'], 'label.print', labelPayload))
-
-});
 
 
 

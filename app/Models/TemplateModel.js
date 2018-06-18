@@ -9,30 +9,25 @@ module.exports = Schema({
   updatedAt: { type: Date, default: null },
 
   type: { type: String, required: true, enum: ['email', 'sms', 'push'] },
-  template: { type: String, required: false, default: null },
+  name: { type: String, required: true, unique: true },
 
-  // required just for email
-  from: { type: String, required: true },
+  engine: { type: String, enum: ['mustache'], default: 'mustache' },
 
-  _contact: { type: Schema.Types.ObjectId, ref: 'Contact', default: null },
-  to: { type: String, required: true },
-
-  sentAt: { type: Date, default: null },
-  readAt: { type: Date, default: null },
-
-  // used for emails
-  subject: { type: String, default: null },
-
-  // used for all types of message
-  text: { type: String, default: null },
+  // used just for all message types
+  text: { type: String, required: true },
 
   // used just for emails
   html: { type: String, default: null },
 
   // used just for emails
-  trackingCode: { type: String, default: null },
+  params: [{
+    name: { type: String, required: true },
+    type: { type: String, required: true, enum: ['Boolean', 'String', 'Object', 'Array', 'Date'] },
+    description: { type: String, default: null }
+  }],
+
 }, {
-  collection: 'messages',
+  collection: 'templates',
   strict: false,
   timestamps: {
     createdAt: 'createdAt',
