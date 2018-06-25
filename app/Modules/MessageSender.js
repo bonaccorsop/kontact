@@ -2,11 +2,8 @@
 
 const slugify = require('slugify');
 const { Observable } = require('rx');
-const { Types } = require('mongoose');
 
-const BaseService = require('./BaseService');
-
-module.exports = class MessageService extends BaseService
+module.exports = class MessageSender
 {
   constructor(options = {}, mainRepository) {
     super(options);
